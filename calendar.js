@@ -1,0 +1,12 @@
+const CalendarAPI = require('node-google-calendar')
+let cal = new CalendarAPI({
+  key:
+    '-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCHttqsKK6R7uYT\nrRv1my3q/cIEydQPmyKZI+JWbrluZZVdn+qXkgvFn0ykuPFMsM+LxVQKpEpHH+Xl\ntZFDszipKa9C0/b+SurSaLMIa6006APL4lso5DYxSH+koJuAV3meQB1Ei7c+BjcR\nlUs0L38QhptjwuyVogcvZH9yG53fIUH71MhSWbi/s8Sj+BCVbaRL0PTHuCsvIRm5\nDRBKIEmVjZa2+uOVUlQIKg5s+HlbA7qBnc1pPhlGZospc1eBtSxgSjVrbjQ/J1BY\nhTxFf8hnQnwTmUMwfOtqo25/Fg3CIsztvlUJt3JbiNGrdE3xMbRciTKiU3QBnM6Z\n8EXWoG59AgMBAAECggEAGU8Qnx/0FDty1TMIfohKqyLZEpcH8MQb0ubGABvkgVG4\n5e2bbFo8T0Wqn6Jsv4JOpjBtwJFMV9C7SRgP58nttGBVcpdAXcJfYc9MKfMYqT/m\na1iCaxEKCS1NvogED85gXBJ1UtHiYZL7pJAMpwX/gnez1Uol4C7H+77YZJGBYrmV\nvx2m54KR5qXSgrs8NiFK2sv3GRB274H543Ss4NyYNpNdQ5xn6o51ISKF929IkTl/\nHdadLGxm48QhStzE5aIu5BrELeRptNVssaLzXdVviQ6ws61Bw896f9R1olJeBCIH\nQqSxbd5YNbqexzVnm41dsoSKatOGllcVP+alzoDG0QKBgQC/N6OCww/lYdd7bXJg\nftBs8w2t1GxZZXpauAIdP4BFq3KJ1i5ytWqXMrWLZW+Q6xN57pfILAIhdyRQSyKs\nvoHOVFv6ohWOeSf1VSkuhKHG7hTlUveeXIpupfQntIKIHp0s8y8zIL0A4ZJSFwEk\nlpp0evAhow54T0Pf853WvwU0rQKBgQC1sWk5WDtOd/BsKSM8gnoRlYARapV2GJQn\nOpdfEjKcg9F1fqgT377bay0Cd6ZRBDyYH2fhk9Blq1Mx+L4l0ZAYkSqd9Am/A4Tn\nMIGYN8s0OJc92/udUTjCxlRu7yX9/vjxCtyMX5dcTa5JNPvBh4VnQI7cl6ZFGbVZ\nujJpyiaLEQKBgARGQSB2Lc/J3SBENQ9VJmGZGVAudHGXJCINBPcUaVClYX0VTZqA\n1a4lkwtXrCPILXpHTBtMaIvI9wXYeCD2bT5oglna77JsoOkKC06f5mHlBpCNxz1C\nAlIw4YFVtqlGTesoUIDLFY6EfFnba8oel7tM2DtYQsWLuA+0iW24fWxNAoGBAJ5y\nWJDpoM6NSd0JAvGB13H+LfECQdT7GjgboGYIOJrFWaRdD7ZFKOuwS1Abh66fQzhm\nKvFNNi9zeNnbUfcpCcBi2AdnChjJuNzkMB/OiCbCMyJ+9K38ZsN0sa0MYNVfxThv\ngGXp9tVH6PVufx4GUQ/5/Jvio90ezkexWMVoxLQBAoGBALAtnIizMJXq8XIuVdL0\nt6yY92RXtXhZI4oNJysiZb4I7ao6bkkKvagwH3g12pcVD5ymLe5Xgg1o/zYw6hij\ndvokDsbTF5/8mt2+wbvur/DyLjZoQSasOcM1w84BJwo9/5gR99g+kee0GZklKpJg\nkDaJupDM+MKQmQ74ysx7UyLx\n-----END PRIVATE KEY-----\n',
+  serviceAcctId: 'byro-294@byro-259814.iam.gserviceaccount.com',
+  calendarId: 'tomas.hobza@gmail.com',
+  timezone: 'UTC+01:00',
+})
+
+cal.CalendarList.list({ showHidden: true })
+  .then(res => console.log(res))
+  .catch(err => console.error(err))
