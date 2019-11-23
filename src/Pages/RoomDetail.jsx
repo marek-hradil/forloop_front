@@ -19,11 +19,15 @@ const RoomDetail = ({ match: { params } }) => {
   const [room, setRoom] = useState({})
   const [timeline, setTimeline] = useState([])
   useEffect(async () => {
-    const { data } = await Axios.get('/room/' + params.id)
-    setRoom((data && data.room) || {})
+    const live = setInterval(async () => {
+      const { data } = await Axios.get('/room/' + params.id)
+      setRoom((data && data.room) || {})
+    }, 5000)
 
     const { data: timeline } = await Axios.get('/timeline')
     setTimeline(timeline || {})
+
+    return () => clearInterval(live)
   }, [params.id])
   return (
     <Row gutters={16}>
@@ -51,7 +55,10 @@ const RoomDetail = ({ match: { params } }) => {
                 Úroveň baterie: {room.last_battery_percentage}% <Icon type='api' />
               </AdditionalRow>
               <Title level={4}>Status</Title>
-              <AdditionalRow>{room.is_full ? 'Plná' : 'Prázdná'}</AdditionalRow>
+              <AdditionalRow>
+                <Dot isFull={room.is_full} />
+                {room.is_full ? 'Plná' : 'Prázdná'}
+              </AdditionalRow>
             </Col>
             <Col span={12}>
               <Title level={4} style={{ paddingBottom: '1rem' }}>
@@ -93,6 +100,15 @@ const TimeLineItem = ({ children, isFree }) => (
 const AdditionalRow = styled.div`
   font-size: 0.95rem;
   padding-bottom: 0.5rem;
+`
+
+const Dot = styled.div`
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  display: inline-block;
+  margin-right: 1rem;
+  background: ${props => (props.isFull ? 'red' : 'green')};
 `
 
 export default RoomDetail

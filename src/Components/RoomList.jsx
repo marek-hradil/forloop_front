@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Row, Col, Card, Typography } from 'antd'
+import { Row, Col, Card, Typography, Empty } from 'antd'
 import RoomCard from './RoomCard'
 import RoomForm from './RoomForm'
 import axios from 'axios'
@@ -11,7 +11,8 @@ const RoomList = () => {
   const [rooms, setRooms] = useState([])
   useEffect(() => {
     fetchRoom()
-    setInterval(() => fetchRoom(), 5000)
+    const live = setInterval(() => fetchRoom(), 5000)
+    return () => clearTimeout(live)
   }, [])
 
   document.addEventListener('refetch_rooms', () => fetchRoom())
@@ -25,6 +26,7 @@ const RoomList = () => {
     <Row gutters={16}>
       <Col lg={14} md={24} style={{ paddingTop: '1rem' }}>
         <Row gutter={16}>
+          {rooms.length === 0 && <Empty style={{ marginTop: '5rem' }} />}
           {rooms.map(room => (
             <Col md={8} sm={12} xs={24}>
               <RoomCard {...room} />

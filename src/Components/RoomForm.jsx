@@ -75,7 +75,16 @@ class RoomForm extends React.Component {
             ],
           })(<Input />)}
         </Form.Item>
-        <Form.Item label='Lokace'>{getFieldDecorator('location')(<Input />)}</Form.Item>
+        <Form.Item label='Lokace'>
+          {getFieldDecorator('location', {
+            rules: [
+              {
+                required: true,
+                message: 'Zadejte lokaci',
+              },
+            ],
+          })(<Input />)}
+        </Form.Item>
 
         <Form.Item label='Párovací id zařízení'>
           {getFieldDecorator('sensor_id', {
