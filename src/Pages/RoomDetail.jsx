@@ -18,17 +18,22 @@ const getRandomOfficeImage = id =>
 const RoomDetail = ({ match: { params } }) => {
   const [room, setRoom] = useState({})
   const [timeline, setTimeline] = useState([])
-  useEffect(async () => {
-    const live = setInterval(async () => {
-      const { data } = await Axios.get('/room/' + params.id)
-      setRoom((data && data.room) || {})
-    }, 5000)
+  useEffect(
+    () => (
+      async () => {
+        const live = setInterval(async () => {
+          const { data } = await Axios.get('/room/' + params.id)
+          setRoom((data && data.room) || {})
+        }, 5000)
 
-    const { data: timeline } = await Axios.get('/timeline')
-    setTimeline(timeline || {})
+        const { data: timeline } = await Axios.get('/timeline')
+        setTimeline(timeline || {})
 
-    return () => clearInterval(live)
-  }, [params.id])
+        return () => clearInterval(live)
+      },
+      [params.id]
+    )
+  )
   return (
     <Row gutters={16}>
       <Col md={10} sm={24}>
