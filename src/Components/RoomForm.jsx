@@ -65,44 +65,44 @@ class RoomForm extends React.Component {
           )
         }}
       >
-        <Form.Item label='Jméno'>
+        <Form.Item label='Name'>
           {getFieldDecorator('name', {
             rules: [
               {
                 required: true,
-                message: 'Zadejte jméno místnosti',
+                message: 'Please enter the name of the room',
               },
             ],
           })(<Input />)}
         </Form.Item>
-        <Form.Item label='Lokace'>
+        <Form.Item label='Lacation'>
           {getFieldDecorator('location', {
             rules: [
               {
                 required: true,
-                message: 'Zadejte lokaci',
+                message: 'Please enter the location',
               },
             ],
           })(<Input />)}
         </Form.Item>
 
-        <Form.Item label='Párovací id zařízení'>
+        <Form.Item label='Pairing device ID'>
           {getFieldDecorator('sensor_id', {
             rules: [
               {
                 required: true,
-                message: 'Zadejte id zařízení',
+                message: 'Please enter the pairing ID of the device',
               },
             ],
           })(<Input />)}
         </Form.Item>
 
-        <Form.Item label='Počet lidí'>
+        <Form.Item label='Room capacity'>
           {getFieldDecorator('max_people', {
             rules: [
               {
                 required: true,
-                message: 'Zadejte maximální počet lidí',
+                message: 'Please enter the room capacity',
               },
             ],
           })(<Input />)}

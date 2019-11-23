@@ -57,7 +57,7 @@ const RoomDetail = ({ match: { params } }) => {
               <Title level={4}>Status</Title>
               <AdditionalRow>
                 <Dot isFull={room.is_full} />
-                {room.is_full ? 'Plná' : 'Prázdná'}
+                {room.is_full ? 'Busy' : 'Empty'}
               </AdditionalRow>
             </Col>
             <Col span={12}>
@@ -80,7 +80,7 @@ const RoomDetail = ({ match: { params } }) => {
                     {status === 'confirmed' ? (
                       <span style={{ color: 'green ' }}>Potvrzeno</span>
                     ) : (
-                      'Zamítnuto'
+                      'Denied'
                     )}
                   </TimeLineItem>
                 ))}

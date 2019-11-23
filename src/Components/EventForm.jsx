@@ -117,7 +117,7 @@ class RegistrationForm extends React.Component {
             ],
           })(<Input />)}
         </Form.Item>
-        <Form.Item label='Lidé'>
+        <Form.Item label='People'>
           {getFieldDecorator('people', {
             rules: [
               {
@@ -127,45 +127,45 @@ class RegistrationForm extends React.Component {
             ],
           })(<Input />)}
         </Form.Item>
-        <Form.Item label='Jméno události'>
+        <Form.Item label='Event name'>
           {getFieldDecorator('name', {
             rules: [
               {
                 required: true,
-                message: 'Prosím, vložte jméno události!',
+                message: 'Please enter the name of the event',
               },
             ],
           })(<Input />)}
         </Form.Item>
-        <Form.Item label='Zasedačka' hasFeedback>
+        <Form.Item label='Meeting room' hasFeedback>
           {getFieldDecorator('room', {
             rules: [{ required: true, message: 'Please select your country!' }],
           })(
-            <Select placeholder='Prosím vyberte zasedačku'>
+            <Select placeholder='Please select a meeting room'>
               {this.state.rooms.map(({ name, id }) => (
                 <Option value={id}>{name}</Option>
               ))}
             </Select>
           )}
         </Form.Item>
-        <Form.Item label='Datum události'>
+        <Form.Item label='Even date'>
           {getFieldDecorator('date_picker', {
             rules: [
               {
                 type: 'object',
                 required: true,
-                message: 'Prosím, vložte den, kdy se událost koná',
+                message: 'Please enter the event date',
               },
             ],
           })(<DatePicker onOk={time => console.log(time, 'called')} />)}
         </Form.Item>
-        <Form.Item label='Čas začátku události'>
+        <Form.Item label='Event start time'>
           {getFieldDecorator('time_picker_from', {
             rules: [
               {
                 type: 'object',
                 required: true,
-                message: 'Prosím, vložte čas, kdy událost začíná',
+                message: 'Please enter the start time of the event',
               },
             ],
           })(
@@ -176,13 +176,13 @@ class RegistrationForm extends React.Component {
             />
           )}
         </Form.Item>
-        <Form.Item label='Čas konce události'>
+        <Form.Item label='Event ending time'>
           {getFieldDecorator('time_picker_till', {
             rules: [
               {
                 type: 'object',
                 required: true,
-                message: 'Prosím, vložte čas, kdy událost končí',
+                message: 'Please enter the ending time of the event',
               },
             ],
           })(
