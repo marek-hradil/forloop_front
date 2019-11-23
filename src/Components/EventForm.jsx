@@ -148,7 +148,7 @@ class RegistrationForm extends React.Component {
             </Select>
           )}
         </Form.Item>
-        <Form.Item label='Even date'>
+        <Form.Item label='Event date'>
           {getFieldDecorator('date_picker', {
             rules: [
               {
