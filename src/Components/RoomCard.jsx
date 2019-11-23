@@ -32,7 +32,7 @@ const RoomCard = ({ name, id, is_full, last_battery_percentage }) => (
     <OccupiedInfo>
       <span>
         <OccupiedInfoDot isActive={is_full} />
-        {is_full ? 'Plné' : 'Prázdné'}
+        {is_full ? 'Busy' : 'Empty'}
       </span>
       <span>
         <Icon type='api' />
