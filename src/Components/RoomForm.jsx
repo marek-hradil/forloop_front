@@ -26,6 +26,8 @@ const tailFormItemLayout = {
   },
 }
 
+const RefetchRooms = new CustomEvent('refetch_rooms')
+
 class RoomForm extends React.Component {
   state = {
     loading: false,
@@ -57,6 +59,7 @@ class RoomForm extends React.Component {
                 toast.error('Not saved')
               } else {
                 this.props.form.resetFields()
+                document.dispatchEvent(RefetchRooms)
               }
             }
           )

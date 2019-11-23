@@ -1,5 +1,7 @@
-import { Form, Input, Select, DatePicker, Button } from 'antd'
+import { Form, Input, Select, DatePicker, Button, TimePicker } from 'antd'
 import React from 'react'
+import Axios from 'axios'
+import { toast } from 'react-toastify'
 
 const { Option } = Select
 
@@ -7,15 +9,30 @@ class RegistrationForm extends React.Component {
   state = {
     confirmDirty: false,
     autoCompleteResult: [],
+    rooms: [],
+    eventsTimes: [],
   }
 
-  handleSubmit = e => {
-    e.preventDefault()
-    this.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values)
-      }
+  async componentDidMount() {
+    await this.getRoomsList()
+  }
+
+  getEventsTimeList = async (from, till) => {
+    const { data } = await Axios.post('/event/list-times', {
+      from,
+      till,
     })
+
+    if (data) {
+      this.setState({ eventsTimes: data.map(([from, to]) => [from.dateTime, to.dateTime]) })
+    }
+  }
+
+  getRoomsList = async () => {
+    const { data } = await Axios.get('/room/list')
+    if (data && data.rooms) {
+      this.setState({ rooms: data.rooms })
+    }
   }
 
   render() {
@@ -45,7 +62,47 @@ class RegistrationForm extends React.Component {
     }
 
     return (
-      <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+      <Form
+        {...formItemLayout}
+        onSubmit={async e => {
+          e.preventDefault()
+          this.props.form.validateFieldsAndScroll(
+            async (
+              err,
+              { email, people, name, room, date_picker, time_picker_till, time_picker_from }
+            ) => {
+              if (err) {
+                return
+              }
+              const peopleEmails = people.split(',').map(string => string.trim())
+              peopleEmails.push(email.trim())
+              const dateFrom =
+                date_picker.toISOString().split('T')[0] +
+                'T' +
+                time_picker_from.toISOString().split('T')[1]
+              const dateTill =
+                date_picker.toISOString().split('T')[0] +
+                'T' +
+                time_picker_till.toISOString().split('T')[1]
+
+              try {
+                await Axios.post('/event/create', {
+                  eventName: name,
+                  peopleMails: peopleEmails,
+                  room_id: room,
+                  date_from: dateFrom,
+                  date_till: dateTill,
+                })
+
+                this.props.form.resetFields()
+              } catch (e) {
+                console.error(e)
+                toast.error(e)
+              }
+            }
+          )
+        }}
+      >
         <Form.Item label='E-mail'>
           {getFieldDecorator('email', {
             rules: [
@@ -61,28 +118,14 @@ class RegistrationForm extends React.Component {
           })(<Input />)}
         </Form.Item>
         <Form.Item label='Lidé'>
-          {getFieldDecorator('number_of_people', {
+          {getFieldDecorator('people', {
             rules: [
               {
                 required: true,
-                message: 'Prosím, přidejte účastníky',
+                message: 'Prosím, vložte aspoň jednoho dalšího účastníka!',
               },
             ],
-          })(
-            <Select
-              mode='multiple'
-              style={{ width: '100%' }}
-              placeholder='Zvolte účastníky'
-              optionLabelProp='label'
-            >
-              <Option value='tomas.hobza@email.com' label='tomas.hobza@email.com'>
-                tomas.hobza@email.com
-              </Option>
-              <Option value='tomas1.hobza@email.com' label='tomas1.hobza@email.com'>
-                tomas1.hobza@email.com
-              </Option>
-            </Select>
-          )}
+          })(<Input />)}
         </Form.Item>
         <Form.Item label='Jméno události'>
           {getFieldDecorator('name', {
@@ -94,19 +137,61 @@ class RegistrationForm extends React.Component {
             ],
           })(<Input />)}
         </Form.Item>
-        <Form.Item label='Datum začátku události'>
-          {getFieldDecorator('date-picker-from', {
-            rules: [
-              { type: 'object', required: true, message: 'Prosím, vložte čas, kdy událost začíná' },
-            ],
-          })(<DatePicker />)}
+        <Form.Item label='Zasedačka' hasFeedback>
+          {getFieldDecorator('room', {
+            rules: [{ required: true, message: 'Please select your country!' }],
+          })(
+            <Select placeholder='Prosím vyberte zasedačku'>
+              {this.state.rooms.map(({ name, id }) => (
+                <Option value={id}>{name}</Option>
+              ))}
+            </Select>
+          )}
         </Form.Item>
-        <Form.Item label='Datum konce události'>
-          {getFieldDecorator('date-picker-till', {
+        <Form.Item label='Datum události'>
+          {getFieldDecorator('date_picker', {
             rules: [
-              { type: 'object', required: true, message: 'Prosím, vložte čas, kdy událost končí' },
+              {
+                type: 'object',
+                required: true,
+                message: 'Prosím, vložte den, kdy se událost koná',
+              },
             ],
-          })(<DatePicker />)}
+          })(<DatePicker onOk={time => console.log(time, 'called')} />)}
+        </Form.Item>
+        <Form.Item label='Čas začátku události'>
+          {getFieldDecorator('time_picker_from', {
+            rules: [
+              {
+                type: 'object',
+                required: true,
+                message: 'Prosím, vložte čas, kdy událost začíná',
+              },
+            ],
+          })(
+            <TimePicker
+              format='HH:mm'
+              minuteStep={10}
+              disabled={!this.props.form.getFieldsValue()['date_picker']}
+            />
+          )}
+        </Form.Item>
+        <Form.Item label='Čas konce události'>
+          {getFieldDecorator('time_picker_till', {
+            rules: [
+              {
+                type: 'object',
+                required: true,
+                message: 'Prosím, vložte čas, kdy událost končí',
+              },
+            ],
+          })(
+            <TimePicker
+              disabled={!this.props.form.getFieldsValue()['date_picker']}
+              format='HH:mm'
+              minuteStep={10}
+            />
+          )}
         </Form.Item>
 
         {/*

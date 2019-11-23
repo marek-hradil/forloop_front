@@ -4,7 +4,7 @@ import { Routes } from './Router'
 import { BrowserRouter } from 'react-router-dom'
 import Axios from 'axios'
 
-Axios.defaults.baseURL = 'http://8ad71f8c.ngrok.io'
+Axios.defaults.baseURL = 'http://10.10.10.90:3000'
 
 const App = () => (
   <BrowserRouter>
