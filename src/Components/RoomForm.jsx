@@ -120,7 +120,7 @@ class RoomForm extends React.Component {
 
         <Form.Item {...tailFormItemLayout}>
           <Button type='primary' htmlType='submit' loading={this.state.loading}>
-            Registrovat
+            Register
           </Button>
         </Form.Item>
       </Form>

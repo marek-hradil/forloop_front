@@ -122,7 +122,7 @@ class RegistrationForm extends React.Component {
             rules: [
               {
                 required: true,
-                message: 'Prosím, vložte aspoň jednoho dalšího účastníka!',
+                message: 'Please, insert one or more attendees',
               },
             ],
           })(<Input />)}
@@ -200,7 +200,7 @@ class RegistrationForm extends React.Component {
         */}
         <Form.Item {...tailFormItemLayout}>
           <Button type='primary' htmlType='submit'>
-            Registrovat
+            Register
           </Button>
         </Form.Item>
       </Form>

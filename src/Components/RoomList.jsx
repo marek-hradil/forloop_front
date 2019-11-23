@@ -46,13 +46,13 @@ const RoomList = () => {
       >
         <Card style={{ width: '97%', marginBottom: '1rem' }}>
           <Title level={3} style={{ marginBottom: '1rem' }}>
-            Založit meeting
+            Create a Meeting
           </Title>
           <EventForm />
         </Card>
         <Card style={{ width: '97%' }}>
           <Title level={3} style={{ marginBottom: '1rem' }}>
-            Založit místnost
+            Create a Room
           </Title>
           <RoomForm />
         </Card>

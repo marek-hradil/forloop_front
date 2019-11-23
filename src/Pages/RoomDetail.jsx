@@ -18,22 +18,17 @@ const getRandomOfficeImage = id =>
 const RoomDetail = ({ match: { params } }) => {
   const [room, setRoom] = useState({})
   const [timeline, setTimeline] = useState([])
-  useEffect(
-    () => (
-      async () => {
-        const live = setInterval(async () => {
-          const { data } = await Axios.get('/room/' + params.id)
-          setRoom((data && data.room) || {})
-        }, 5000)
+  useEffect(() => {
+    ;(async () => {
+      const live = setInterval(async () => {
+        const { data } = await Axios.get('/room/' + params.id)
+        setRoom((data && data.room) || {})
+      }, 5000)
 
-        const { data: timeline } = await Axios.get('/timeline')
-        setTimeline(timeline || {})
-
-        return () => clearInterval(live)
-      },
-      [params.id]
-    )
-  )
+      const { data: timeline } = await Axios.get('/timeline')
+      setTimeline(timeline || {})
+    })()
+  }, [params.id])
   return (
     <Row gutters={16}>
       <Col md={10} sm={24}>
@@ -52,12 +47,12 @@ const RoomDetail = ({ match: { params } }) => {
           </Row>
           <Row>
             <Col span={12}>
-              <Title level={4}>Informace o mísnosti</Title>
+              <Title level={4}>Informations about room</Title>
               <AdditionalRow>Sensor ID: {room.sensorId}</AdditionalRow>
-              <AdditionalRow>Maximální počet lidí: {room.max_people}</AdditionalRow>
-              <AdditionalRow>Lokace místnosti: {room.location}</AdditionalRow>
+              <AdditionalRow>Max. number of people: {room.max_people}</AdditionalRow>
+              <AdditionalRow>Room locations: {room.location}</AdditionalRow>
               <AdditionalRow>
-                Úroveň baterie: {room.last_battery_percentage}% <Icon type='api' />
+                Battery level: {room.last_battery_percentage}% <Icon type='api' />
               </AdditionalRow>
               <Title level={4}>Status</Title>
               <AdditionalRow>
@@ -83,7 +78,7 @@ const RoomDetail = ({ match: { params } }) => {
                     })}
                     <h3>{summary}</h3>
                     {status === 'confirmed' ? (
-                      <span style={{ color: 'green ' }}>Potvrzeno</span>
+                      <span style={{ color: 'green ' }}>Confirmed</span>
                     ) : (
                       'Denied'
                     )}
