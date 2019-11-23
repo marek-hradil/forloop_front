@@ -26,5 +26,5 @@ const getInvitationMail = ({
     It's taking place on 5th of December, at Veveøí 15, at 15 o'clock.
     If you think this is a mistake or want to tell John some information
     about yourself (i.e. you can't make it) contact him at ${creator_email}
-  `,
+  `, 
 })

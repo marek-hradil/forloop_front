@@ -3,20 +3,25 @@ import styled from '@emotion/styled'
 import { Card, Button } from 'antd'
 import { Link } from 'react-router-dom'
 
-const RoomCard = ({ name, id, img_path, is_occupied }) => (
+const RoomCard = ({ name, id, is_full }) => (
   <Card
     bordered={false}
     hoverable
-    cover={<img alt='room-img' src={img_path} />}
+    cover={
+      <img
+        alt='room-img'
+        src={'https://wearespaces.com/toby/img/meeting-and-conference-rooms-rental-resized.jpg'}
+      />
+    }
     style={{ marginBottom: '1rem' }}
   >
     <h3>{name}</h3>
     <OccupiedInfo>
       <span>
-        <OccupiedInfoDot isActive={is_occupied} />
-        {is_occupied ? 'Plné' : 'Prázdné'}
+        <OccupiedInfoDot isActive={is_full} />
+        {is_full ? 'Plné' : 'Prázdné'}
       </span>
-      <Link to='/room'>
+      <Link to={`/room/${id}`}>
         <Button type='primary' shape='circle' icon='right' size='large' />
       </Link>
     </OccupiedInfo>

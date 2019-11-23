@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Row, Col, Typography, Timeline, Card } from 'antd'
 import styled from '@emotion/styled'
+import Axios from 'axios'
 const { Title } = Typography
 
 const timelineEvents = Array.from({ length: 10 }).map((_, index) => ({
@@ -8,7 +9,14 @@ const timelineEvents = Array.from({ length: 10 }).map((_, index) => ({
   is_free: index % 2 === 0,
 }))
 
-const RoomDetail = () => {
+const RoomDetail = ({ match: { params } }) => {
+  const [room, setRoom] = useState({})
+  useEffect(() => {
+    ;(async () => {
+      const { data } = await Axios.get('/room/' + params.id)
+      setRoom((data && data.room) || {})
+    })()
+  }, [params.id])
   return (
     <Row gutters={16}>
       <Col span={10}>
@@ -22,12 +30,16 @@ const RoomDetail = () => {
         <Card style={{ paddingLeft: '1rem' }}>
           <Row>
             <Col span={24}>
-              <Title level={2}>Místnost 1</Title>
+              <Title level={2}>{room.name}</Title>
             </Col>
           </Row>
           <Row>
             <Col span={24}>
               <Title level={4}>Informace o mísnosti</Title>
+              <AdditionalRow>Sensor ID: {room.sensorId}</AdditionalRow>
+              <AdditionalRow>Maximální počet lidí: {room.max_people}</AdditionalRow>
+              <AdditionalRow>Lokace místnosti: {room.location}</AdditionalRow>
+              <AdditionalRow>Úroveň baterie: {room.last_battery_percentage}%</AdditionalRow>
             </Col>
           </Row>
           <Row>
@@ -37,7 +49,7 @@ const RoomDetail = () => {
               </Title>
               <Timeline>
                 {timelineEvents.map(({ text, is_free }) => (
-                  <TimeLineItem isFree={is_free}>{is_free ? 'Volno' : text}</TimeLineItem>
+                  <TimeLineItem isFree={room.is_free}>{room.is_free ? 'Volno' : text}</TimeLineItem>
                 ))}
               </Timeline>
             </Col>
@@ -55,11 +67,9 @@ const TimeLineItem = ({ children, isFree }) => (
   <Timeline.Item color={isFree ? 'green' : 'red'}>{children}</Timeline.Item>
 )
 
-const Line = styled.div`
-  display: inline-block;
-  height: 2rem;
-  width: 5px;
-  background: ${props => (props.isFree ? 'gray' : 'blue')};
+const AdditionalRow = styled.div`
+  font-size: 0.95rem;
+  padding-bottom: 0.5rem;
 `
 
 export default RoomDetail

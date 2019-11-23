@@ -8,7 +8,7 @@ import CreateRoom from './Pages/CreateRoom'
 export const Routes = () => (
   <>
     <Route path='/' exact={true} component={RoomList} />
-    <Route path='/room' component={RoomDetail} />
+    <Route path='/room/:id' component={RoomDetail} />
     <Route path='/create-event' exact={true} component={CreateEvent} />
     <Route path='/create-room' exact={true} component={CreateRoom} />
   </>
